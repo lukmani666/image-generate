@@ -1,11 +1,11 @@
 import React from 'react'
-import Section from './components/Section'
+import Main from './components/Main'
 import './App.css'
 
 const App = () => {
   return (
     <div>
-      <Section />
+      <Main />
     </div>
   )
 }

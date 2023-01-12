@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { Configuration, OpenAIApi } from 'openai'
-import './section.css'
+import './main.css'
 
 const Section = () => {
 
