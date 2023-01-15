@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Configuration, OpenAIApi } from 'openai'
 import './main.css'
 
-const Section = () => {
+const Main = () => {
 
     const [ prompt, setPrompt ] = useState("");
     const [ result, setResult ] = useState("");
@@ -75,4 +75,4 @@ const Section = () => {
     )
 }
 
-export default Section
+export default Main
