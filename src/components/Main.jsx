@@ -7,6 +7,7 @@ const Main = () => {
 
     const [ prompt, setPrompt ] = useState("");
     const [ result, setResult ] = useState("");
+    const [ generate, setGenerate] = useState(false);
 
     const configuration = new Configuration({
         apiKey: process.env.REACT_APP_OPENAI_KEY,
@@ -16,24 +17,35 @@ const Main = () => {
 
 
     const generateImage = async () => {
-        const res = await openai.createImage({
-            prompt: prompt,
-            n: 1,
-            size: '512x512',
-        });
+        try {
+            setGenerate(true);
+            const res = await openai.createImage({
+                prompt: prompt,
+                n: 1,
+                size: '512x512',
+            });
 
-        setResult(res.data.data[0].url);
+           
+
+            setResult(res.data.data[0].url);
+            setGenerate(false);
+        } catch (error) {
+            
+            setGenerate(false);
+        }
 
     };
 
+   
 
     return (
 
         <div>
             <nav className="navbar">
-                <div>
+                <div className='txt'>
                     <h2 className="navtxt">Open AI Image
-                    <span className='spantxt'>Generator</span></h2>
+                        <span className='spantxt'>Generator</span>
+                    </h2>
                 </div>
             </nav>
             <section className="top">
@@ -54,8 +66,8 @@ const Main = () => {
                     </form>
                 </div>
                 <div>
-                    <button onClick={generateImage} className='btn'>
-                       Generate an Image
+                    <button onClick={generateImage} className='btn' disabled={generate}>
+                        {generate ? <>Generating...</> : <>Generate an Image</>}
                     </button>
                     
                 </div>
@@ -63,7 +75,7 @@ const Main = () => {
             <main>
                 <div className='img_container'>
                     <div>
-                    <h2 className="msg">The beau image</h2>
+                    <h2 className="msg"></h2>
                     {result.length > 0 ? (<img src={result} alt="result" />)
                     : (
                         <></>
