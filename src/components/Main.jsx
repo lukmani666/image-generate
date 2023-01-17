@@ -1,14 +1,17 @@
 import React from 'react'
 import { useState } from 'react'
 import { Configuration, OpenAIApi } from 'openai'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 import './main.css'
+import './spinner/spinner.css'
 
 const Main = () => {
 
     const [ prompt, setPrompt ] = useState("");
     const [ result, setResult ] = useState("");
     const [ generate, setGenerate] = useState(false);
-
+    const [ display, setDisplay ] = useState(false);
+   
     const configuration = new Configuration({
         apiKey: process.env.REACT_APP_OPENAI_KEY,
     });
@@ -17,26 +20,26 @@ const Main = () => {
 
 
     const generateImage = async () => {
+
+    
         try {
+            setDisplay(true)
             setGenerate(true);
             const res = await openai.createImage({
                 prompt: prompt,
                 n: 1,
-                size: '512x512',
+                size: "256x256",
             });
-
-           
 
             setResult(res.data.data[0].url);
             setGenerate(false);
+            setDisplay(false);
         } catch (error) {
-            
+            setDisplay(false);
             setGenerate(false);
         }
 
     };
-
-   
 
     return (
 
@@ -76,13 +79,16 @@ const Main = () => {
                 <div className='img_container'>
                     <div>
                     <h2 className="msg"></h2>
-                    {result.length > 0 ? (<img src={result} alt="result" />)
+                    {result.length > 0 ? (<LazyLoadImage src={result} alt="result"
+                         placeholderSrc={result} effect="blur" />)
                     : (
                         <></>
                     )}
                 </div>
             </div>
             </main>
+           {display && <div className="loading"></div>}
+            
         </div>
     )
 }
